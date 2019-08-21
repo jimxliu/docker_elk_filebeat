@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  filebeat:
+    build:
+      context: .
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
