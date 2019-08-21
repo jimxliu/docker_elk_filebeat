@@ -53,7 +53,8 @@ Based on the official Docker images from Elastic:
 * 1.5 GB of RAM
 
 By default, the stack exposes the following ports:
-* 5000: Logstash TCP input
+* 5044: Logstash TCP input
+* 9600: Logstash TCP input
 * 9200: Elasticsearch HTTP
 * 9300: Elasticsearch TCP transport
 * 5601: Kibana
