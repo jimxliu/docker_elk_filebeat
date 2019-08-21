@@ -328,13 +328,6 @@ $ docker-compose up
 > :information_source: Always pay attention to the [upgrade instructions][upgrade] for each individual component before
 performing a stack upgrade.
 
-### Plugins and integrations
-
-See the following Wiki pages:
-
-* [External applications](https://github.com/deviantony/docker-elk/wiki/External-applications)
-* [Popular integrations](https://github.com/deviantony/docker-elk/wiki/Popular-integrations)
-
 ### Swarm mode
 
 Experimental support for Docker [Swarm mode][swarm-mode] is provided in the form of a `docker-stack.yml` file, which can
