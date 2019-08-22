@@ -100,7 +100,7 @@ $ docker-compose up
 
 ### Bringing up the Filebeat docker container
 
-First, in ```filebeat/filebeat.yml``` replace <logstash server IP> with the IP address your ELK stack is running on
+First, in ```filebeat/filebeat.yml``` file, replace `\<logstash server IP\>` with the IP address your ELK stack is running on
 
 Then, run the filebeat log shipper as docker:
 
