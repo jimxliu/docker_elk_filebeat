@@ -92,6 +92,10 @@ exclusively. Make sure the repository is cloned in one of those locations or fol
 
 ## Usage
 
+In dev/test environment, ELK stack and Filbeat can run separately using `docker-compose up`and do not need to share a bridge or overlay network; however, Filebeat needs to be able to connect to the host of ELK.
+
+In [production](#go-to-production) environment, it is recommended to run ELK + Filebeat as ONE stack in a Docker Swarm.
+
 ### Bringing up the stack
 
 Clone this repository to the server on which the stack will be running.
