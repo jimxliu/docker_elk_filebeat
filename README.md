@@ -3,6 +3,9 @@
 
 This repository is about creating a **centralized logging platform** for your docker containers, using **ELK stack + Filebeat**, which are also running on docker.
 
+"ELK" is the acronym for three open source projects: Elasticsearch, Logstash, and Kibana. **Elasticsearch** is a search and analytics engine. **Logstash** is a server‑side data processing pipeline that ingests data from multiple sources simultaneously, transforms it, and then sends it to a "stash" like Elasticsearch. **Kibana** lets users visualize data with charts and graphs in Elasticsearch.
+
+On top the ELK stack is **Filebeat**, a log shipper belonging to the Beats family — a group of lightweight shippers installed on hosts for shipping different kinds of data into the ELK Stack for analysis.
 
 Based on the official Docker images from Elastic:
 
@@ -21,6 +24,7 @@ Based on the official Docker images from Elastic:
      * [macOS](#macos)
 2. [Usage](#usage)
    * [Bringing up the stack](#bringing-up-the-stack)
+   * [Bringing up the beat](#bringing-up-the-beat) 
    * [Initial setup](#initial-setup)
      * [Setting up user authentication](#setting-up-user-authentication)
      * [Log in Kibana](#log-in-kibana)
@@ -38,7 +42,6 @@ Based on the official Docker images from Elastic:
    * [How to enable a remote JMX connection to a service](#how-to-enable-a-remote-jmx-connection-to-a-service)
 6. [Going further](#going-further)
    * [Using a newer stack version](#using-a-newer-stack-version)
-   * [Plugins and integrations](#plugins-and-integrations)
    * [Swarm mode](#swarm-mode)
 
 ## Requirements
@@ -95,17 +98,18 @@ $ cd elk_stack
 $ docker-compose up
 ```
 
-### Bringing up the Filebeat docker container
+### Bringing up the beat
 
-First, in ```filebeat/filebeat.yml``` file, replace `<logstash server IP>` with the IP address your ELK stack is running on
+First, in ```filebeat/filebeat.yml``` file, replace `<logstash server IP>` with the IP address your ELK stack is running on.
 
-Then, run the filebeat log shipper as docker:
+Then, run the Filebeat as docker:
 
 ```console
 $ cd filebeat
 $ docker-compose up
 ```
 
+By default, all container logs of the server on which the Filbeat container is running will be shipped to Logstash container for processing.
 
 You can also run all services in the background (detached mode) by adding the `-d` flag to the above command.
 
@@ -113,9 +117,9 @@ You can also run all services in the background (detached mode) by adding the `-
 
 If you are starting the stack for the very first time, please read the section below attentively.
 
-## Initial setup
+### Initial setup
 
-### Setting up user authentication
+#### Setting up user authentication
 
 > :information_source: Refer to [How to disable paid features](#how-to-disable-paid-features) to disable authentication.
 
@@ -148,7 +152,7 @@ $ docker-compose restart kibana logstash
 > :information_source: Learn more about the security of the Elastic stack at [Tutorial: Getting started with
 > security][sec-tutorial].
 
-### Log in Kibana
+#### Log in Kibana
 
 Give Kibana about a minute to initialize, then access the Kibana web UI by hitting
 [http://localhost:5601](http://localhost:5601) or http://\<docker host IP\>:5601 with a web browser and use the following default credentials to log in:
@@ -157,11 +161,11 @@ Give Kibana about a minute to initialize, then access the Kibana web UI by hitti
 * password: *\<your generated elastic password>*
 
 
-### Default Kibana index pattern creation
+#### Default Kibana index pattern creation
 
 When Kibana launches for the first time, it is not configured with any index pattern.
 
-#### Via the Kibana web UI
+##### Via the Kibana web UI
 
 > :information_source: You need to inject data into Logstash before being able to configure a Logstash index pattern via
 the Kibana web UI. Then all you have to do is hit the *Create* button.
@@ -169,7 +173,7 @@ the Kibana web UI. Then all you have to do is hit the *Create* button.
 Refer to [Connect Kibana with Elasticsearch][connect-kibana] for detailed instructions about the index pattern
 configuration.
 
-#### On the command line
+##### On the command line
 
 Create an index pattern via the Kibana API:
 
@@ -182,6 +186,7 @@ $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
 ```
 
 The created pattern will automatically be marked as the default index pattern as soon as the Kibana UI is opened for the first time.
+
 
 ## Configuration
 
