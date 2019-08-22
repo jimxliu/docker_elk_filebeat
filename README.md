@@ -31,6 +31,7 @@ Based on the official Docker images from Elastic:
      * [Setting up user authentication](#setting-up-user-authentication)
      * [Log in Kibana](#log-in-kibana)
      * [Default Kibana index pattern creation](#default-kibana-index-pattern-creation)
+   * [Go to Production](#go-to-production)
 3. [Configuration](#configuration)
    * [How to configure Elasticsearch](#how-to-configure-elasticsearch)
    * [How to configure Kibana](#how-to-configure-kibana)
@@ -193,6 +194,9 @@ $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
 
 The created pattern will automatically be marked as the default index pattern as soon as the Kibana UI is opened for the first time.
 
+### Go to Production
+
+To be added...
 
 ## Configuration
 
