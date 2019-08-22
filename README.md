@@ -1,7 +1,7 @@
 # Centralized Container Logging: Elastic stack (ELK) + Filebeat on Docker
 
 
-This repository is about creating a **centralized logging platform** for your docker containers, using **ELK stack + Filebeat**, which are also running on docker.
+This repository, modified from the [original repository][original-repo], is about creating a **centralized logging platform** for your Docker containers, using **ELK stack + Filebeat**, which are also running on Docker.
 
 "ELK" is the acronym for three open source projects: Elasticsearch, Logstash, and Kibana. **Elasticsearch** is a search and analytics engine. **Logstash** is a server‑side data processing pipeline that ingests data from multiple sources simultaneously, transforms it, and then sends it to a "stash" like Elasticsearch. **Kibana** lets users visualize data with charts and graphs in Elasticsearch.
 
@@ -234,7 +234,9 @@ containers: [Configuring Logstash for Docker][ls-docker].
 
 The Filebeat configuration is stored in [`filebeat/config/filebeat.yml`][config-fb]
 
-Please refer to the following documentation page for more details about how to configure Filebeat to take container logs as an input: [Container Input][fb-container-input], or how to run Filebeat as a container: [Running Filebeat on Docker][fb-docker].
+By default, it takes all the containers' logs on its host as the input and output to Logstash:
+
+Please refer to the following documentation page for more details about how to configure Filebeat to take container logs as the input: [Container Input][fb-container-input], or how to run Filebeat as a container: [Running Filebeat on Docker][fb-docker].
 
 ### How to disable paid features
 
@@ -346,6 +348,7 @@ $ docker stack services elk
 > :information_source: To scale Elasticsearch in Swarm mode, configure *zen* to use the DNS name `tasks.elasticsearch`
 instead of `elasticsearch`.
 
+[original-repo]: https://github.com/deviantony/docker-elk
 
 [elk-stack]: https://www.elastic.co/elk-stack
 [stack-features]: https://www.elastic.co/products/stack
