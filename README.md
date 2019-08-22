@@ -97,7 +97,7 @@ $ docker-compose up
 
 ### Bringing up the Filebeat docker container
 
-First, in ```filebeat/filebeat.yml``` file, replace `\<logstash server IP\>` with the IP address your ELK stack is running on
+First, in ```filebeat/filebeat.yml``` file, replace `<logstash server IP>` with the IP address your ELK stack is running on
 
 Then, run the filebeat log shipper as docker:
 
@@ -151,7 +151,7 @@ $ docker-compose restart kibana logstash
 ### Injecting data
 
 Give Kibana about a minute to initialize, then access the Kibana web UI by hitting
-[http://localhost:5601](http://localhost:5601) with a web browser and use the following default credentials to log in:
+[http://localhost:5601](http://localhost:5601) or http://\<docker host IP\>:5601 with a web browser and use the following default credentials to log in:
 
 * user: *elastic*
 * password: *\<your generated elastic password>*
