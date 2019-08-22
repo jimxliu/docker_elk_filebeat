@@ -87,11 +87,23 @@ exclusively. Make sure the repository is cloned in one of those locations or fol
 
 ## Usage
 
+Clone this repository
+
 ### Bringing up the stack
 
-Clone this repository, then start the stack using Docker Compose:
+To start the **ELK stack** using Docker Compose:
 
 ```console
+$ cd elk_stack
+$ docker-compose up
+```
+
+### Bringing up the Filebeat docker container
+
+To start the filebeat log shipper on docker:
+
+```console
+$ cd filebeat
 $ docker-compose up
 ```
 
