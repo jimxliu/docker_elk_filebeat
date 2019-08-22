@@ -33,6 +33,7 @@ Based on the official Docker images from Elastic:
    * [How to configure Elasticsearch](#how-to-configure-elasticsearch)
    * [How to configure Kibana](#how-to-configure-kibana)
    * [How to configure Logstash](#how-to-configure-logstash)
+   * [How to configure Filebeat](#how-to-configure-filebeat)
    * [How to disable paid features](#how-to-disable-paid-features)
    * [How to scale out the Elasticsearch cluster](#how-to-scale-out-the-elasticsearch-cluster)
 4. [Storage](#storage)
@@ -195,7 +196,7 @@ any configuration change.
 
 ### How to configure Elasticsearch
 
-The Elasticsearch configuration is stored in [`elasticsearch/config/elasticsearch.yml`][config-es].
+The Elasticsearch configuration is stored in [`elk_stack/elasticsearch/config/elasticsearch.yml`][config-es].
 
 You can also specify the options you want to override by setting environment variables inside the Compose file:
 
@@ -212,7 +213,7 @@ containers: [Install Elasticsearch with Docker][es-docker].
 
 ### How to configure Kibana
 
-The Kibana default configuration is stored in [`kibana/config/kibana.yml`][config-kbn].
+The Kibana default configuration is stored in [`elk_stack/kibana/config/kibana.yml`][config-kbn].
 
 It is also possible to map the entire `config` directory instead of a single file.
 
@@ -221,13 +222,19 @@ containers: [Running Kibana on Docker][kbn-docker].
 
 ### How to configure Logstash
 
-The Logstash configuration is stored in [`logstash/config/logstash.yml`][config-ls].
+The Logstash configuration is stored in [`elk_stack/logstash/config/logstash.yml`][config-ls].
 
 It is also possible to map the entire `config` directory instead of a single file, however you must be aware that
 Logstash will be expecting a [`log4j2.properties`][log4j-props] file for its own logging.
 
 Please refer to the following documentation page for more details about how to configure Logstash inside Docker
 containers: [Configuring Logstash for Docker][ls-docker].
+
+### How to configure Filebeat
+
+The Filebeat configuration is stored in [`filebeat/config/filebeat.yml`][config-fb]
+
+Please refer to the following documentation page for more details about how to configure Filebeat to take container logs as an input: [Container Input][fb-container-input], or how to run Filebeat as a container: [Running Filebeat on Docker][fb-docker].
 
 ### How to disable paid features
 
