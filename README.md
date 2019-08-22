@@ -364,13 +364,16 @@ instead of `elasticsearch`.
 
 [connect-kibana]: https://www.elastic.co/guide/en/kibana/current/connect-to-elasticsearch.html
 
-[config-es]: ./elasticsearch/config/elasticsearch.yml
-[config-kbn]: ./kibana/config/kibana.yml
-[config-ls]: ./logstash/config/logstash.yml
+[config-es]: ./elk_stack/elasticsearch/config/elasticsearch.yml
+[config-kbn]: ./elk_stack/kibana/config/kibana.yml
+[config-ls]: ./elk_stack/logstash/config/logstash.yml
+[config-fb]: ./filebeat/config/filebeat.yml
 
 [es-docker]: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 [kbn-docker]: https://www.elastic.co/guide/en/kibana/current/docker.html
 [ls-docker]: https://www.elastic.co/guide/en/logstash/current/docker-config.html
+[fb-docker]: https://www.elastic.co/guide/en/beats/filebeat/current/running-on-docker.html
+[fb-container-input]: https://www.elastic.co/guide/en/beats/filebeat/master/filebeat-input-container.html
 
 [log4j-props]: https://github.com/elastic/logstash/tree/7.3/docker/data/logstash/config
 [esuser]: https://github.com/elastic/elasticsearch/blob/7.3/distribution/docker/src/docker/Dockerfile#L18-L19
