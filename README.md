@@ -234,7 +234,21 @@ containers: [Configuring Logstash for Docker][ls-docker].
 
 The Filebeat configuration is stored in [`filebeat/config/filebeat.yml`][config-fb]
 
-By default, it takes all the containers' logs on its host as the input and output to Logstash:
+By default, it takes all the containers' logs on its host as the input: 
+
+```yml
+filebeat.inputs:
+   - type: container
+     paths:
+        - '/var/lib/docker/containers/*/*.log'
+```
+
+And output to Logstash:
+
+```yml
+output.logstash:
+   hosts: ["<logstash server IP>:5044"]
+```
 
 Please refer to the following documentation page for more details about how to configure Filebeat to take container logs as the input: [Container Input][fb-container-input], or how to run Filebeat as a container: [Running Filebeat on Docker][fb-docker].
 
