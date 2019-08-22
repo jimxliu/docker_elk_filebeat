@@ -33,13 +33,10 @@ Based on the official Docker images from Elastic:
    * [How to scale out the Elasticsearch cluster](#how-to-scale-out-the-elasticsearch-cluster)
 4. [Storage](#storage)
    * [How to persist Elasticsearch data](#how-to-persist-elasticsearch-data)
-5. [Extensibility](#extensibility)
-   * [How to add plugins](#how-to-add-plugins)
-   * [How to enable the provided extensions](#how-to-enable-the-provided-extensions)
-6. [JVM tuning](#jvm-tuning)
+5. [JVM tuning](#jvm-tuning)
    * [How to specify the amount of memory used by a service](#how-to-specify-the-amount-of-memory-used-by-a-service)
    * [How to enable a remote JMX connection to a service](#how-to-enable-a-remote-jmx-connection-to-a-service)
-7. [Going further](#going-further)
+6. [Going further](#going-further)
    * [Using a newer stack version](#using-a-newer-stack-version)
    * [Plugins and integrations](#plugins-and-integrations)
    * [Swarm mode](#swarm-mode)
@@ -266,23 +263,6 @@ This will store Elasticsearch data inside `/path/to/storage`.
 user][esuser] is used within the Elasticsearch image, therefore the mounted data directory must be writable by the uid
 `1000`.
 
-## Extensibility
-
-### How to add plugins
-
-To add plugins to any ELK component you have to:
-
-1. Add a `RUN` statement to the corresponding `Dockerfile` (eg. `RUN logstash-plugin install logstash-filter-json`)
-2. Add the associated plugin code configuration to the service configuration (eg. Logstash input/output)
-3. Rebuild the images using the `docker-compose build` command
-
-### How to enable the provided extensions
-
-A few extensions are available inside the [`extensions`](extensions) directory. These extensions provide features which
-are not part of the standard Elastic stack, but can be used to enrich it with extra integrations.
-
-The documentation for these extensions is provided inside each individual subdirectory, on a per-extension basis. Some
-of them require manual changes to the default ELK configuration.
 
 ## JVM tuning
 
