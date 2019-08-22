@@ -100,12 +100,15 @@ $ docker-compose up
 
 ### Bringing up the Filebeat docker container
 
-To start the filebeat log shipper on docker:
+First, in ```filebeat/filebeat.yml``` replace <logstash server IP> with the IP address your ELK stack is running on
+
+Then, run the filebeat log shipper as docker:
 
 ```console
 $ cd filebeat
 $ docker-compose up
 ```
+
 
 You can also run all services in the background (detached mode) by adding the `-d` flag to the above command.
 
