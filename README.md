@@ -89,9 +89,9 @@ exclusively. Make sure the repository is cloned in one of those locations or fol
 
 ## Usage
 
-Clone this repository
-
 ### Bringing up the stack
+
+Clone this repository to the server on which the stack will be running.
 
 To start the **ELK stack** using Docker Compose:
 
@@ -102,7 +102,9 @@ $ docker-compose up
 
 ### Bringing up the beat
 
-First, in ```filebeat/filebeat.yml``` file, replace `<logstash server IP>` with the IP address your ELK stack is running on.
+Clone this repository to the server from which you like to ship logs to ELK stack.
+
+First, in ```filebeat/filebeat.yml``` file, you **MUST** replace `<logstash server IP>` with the IP address your ELK stack is running on.
 
 Then, run the Filebeat as docker:
 
