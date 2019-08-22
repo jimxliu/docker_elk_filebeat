@@ -23,7 +23,7 @@ Based on the official Docker images from Elastic:
    * [Bringing up the stack](#bringing-up-the-stack)
    * [Initial setup](#initial-setup)
      * [Setting up user authentication](#setting-up-user-authentication)
-     * [Injecting data](#injecting-data)
+     * [Log in Kibana](#log-in-kibana)
      * [Default Kibana index pattern creation](#default-kibana-index-pattern-creation)
 3. [Configuration](#configuration)
    * [How to configure Elasticsearch](#how-to-configure-elasticsearch)
@@ -148,7 +148,7 @@ $ docker-compose restart kibana logstash
 > :information_source: Learn more about the security of the Elastic stack at [Tutorial: Getting started with
 > security][sec-tutorial].
 
-### Injecting data
+### Log in Kibana
 
 Give Kibana about a minute to initialize, then access the Kibana web UI by hitting
 [http://localhost:5601](http://localhost:5601) or http://\<docker host IP\>:5601 with a web browser and use the following default credentials to log in:
@@ -156,14 +156,6 @@ Give Kibana about a minute to initialize, then access the Kibana web UI by hitti
 * user: *elastic*
 * password: *\<your generated elastic password>*
 
-Now that the stack is running, you can go ahead and inject some log entries. The shipped Logstash configuration allows
-you to send content via TCP:
-
-```console
-$ nc localhost 5000 < /path/to/logfile.log
-```
-
-You can also load the sample data provided by your Kibana installation.
 
 ### Default Kibana index pattern creation
 
