@@ -44,6 +44,7 @@ Based on the official Docker images from Elastic:
 6. [Going further](#going-further)
    * [Using a newer stack version](#using-a-newer-stack-version)
    * [Swarm mode](#swarm-mode)
+7. [Additional references](#additional-references)
 
 ## Requirements
 
@@ -361,6 +362,12 @@ $ docker stack services elk
 
 > :information_source: To scale Elasticsearch in Swarm mode, configure *zen* to use the DNS name `tasks.elasticsearch`
 instead of `elasticsearch`.
+
+## Additional references
+* [ELK-on-Docker tutorial blog](https://logz.io/blog/docker-logging/)
+* [Filebeat tutorial](https://logz.io/blog/filebeat-tutorial/)
+* [Discussion: Collecting Logfiles of Docker containers with Filebeat running as docker container](https://discuss.elastic.co/t/collecting-logfiles-of-docker-containers-with-filebeat-running-as-docker-container/77548)
+
 
 [original-repo]: https://github.com/deviantony/docker-elk
 
