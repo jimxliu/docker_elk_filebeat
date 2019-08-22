@@ -1,4 +1,4 @@
-# Centralized Container Logging: Elastic stack (ELK) + Filebeat on Docker
+# Centralized Container Logging: Elastic Stack (ELK + Filebeat) on Docker
 
 
 This repository, modified from the [original repository][original-repo], is about creating a **centralized logging platform** for your Docker containers, using **ELK stack + Filebeat**, which are also running on Docker.
