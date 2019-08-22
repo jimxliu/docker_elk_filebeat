@@ -7,6 +7,8 @@ This repository, modified from the [original repository][original-repo], is abou
 
 On top the ELK stack is **Filebeat**, a log shipper belonging to the Beats family — a group of lightweight shippers installed on hosts for shipping different kinds of data into the ELK Stack for analysis.
 
+![ELK + Filebeat Image][elk-fb]
+
 Based on the official Docker images from Elastic:
 
 * [Elasticsearch](https://github.com/elastic/elasticsearch/tree/master/distribution/docker)
@@ -372,6 +374,7 @@ instead of `elasticsearch`.
 
 
 [original-repo]: https://github.com/deviantony/docker-elk
+[elk-fb]: https://logz.io/wp-content/uploads/2017/06/relationship-between-filebeat-and-logstash.png
 
 [elk-stack]: https://www.elastic.co/elk-stack
 [stack-features]: https://www.elastic.co/products/stack
