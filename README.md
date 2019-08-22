@@ -3,6 +3,9 @@
 
 This repository is about creating a **centralized logging platform** for your docker containers, using **ELK stack + Filebeat**, which are also running on docker.
 
+"ELK" is the acronym for three open source projects: Elasticsearch, Logstash, and Kibana. **Elasticsearch** is a search and analytics engine. **Logstash** is a server‑side data processing pipeline that ingests data from multiple sources simultaneously, transforms it, and then sends it to a "stash" like Elasticsearch. **Kibana** lets users visualize data with charts and graphs in Elasticsearch.
+
+On top the ELK stack is **Filebeat**, a log shipper belonging to the Beats family — a group of lightweight shippers installed on hosts for shipping different kinds of data into the ELK Stack for analysis.
 
 Based on the official Docker images from Elastic:
 
@@ -21,27 +24,25 @@ Based on the official Docker images from Elastic:
      * [macOS](#macos)
 2. [Usage](#usage)
    * [Bringing up the stack](#bringing-up-the-stack)
+   * [Bringing up the beat](#bringing-up-the-beat) 
    * [Initial setup](#initial-setup)
      * [Setting up user authentication](#setting-up-user-authentication)
-     * [Injecting data](#injecting-data)
+     * [Log in Kibana](#log-in-kibana)
      * [Default Kibana index pattern creation](#default-kibana-index-pattern-creation)
 3. [Configuration](#configuration)
    * [How to configure Elasticsearch](#how-to-configure-elasticsearch)
    * [How to configure Kibana](#how-to-configure-kibana)
    * [How to configure Logstash](#how-to-configure-logstash)
+   * [How to configure Filebeat](#how-to-configure-filebeat)
    * [How to disable paid features](#how-to-disable-paid-features)
    * [How to scale out the Elasticsearch cluster](#how-to-scale-out-the-elasticsearch-cluster)
 4. [Storage](#storage)
    * [How to persist Elasticsearch data](#how-to-persist-elasticsearch-data)
-5. [Extensibility](#extensibility)
-   * [How to add plugins](#how-to-add-plugins)
-   * [How to enable the provided extensions](#how-to-enable-the-provided-extensions)
-6. [JVM tuning](#jvm-tuning)
+5. [JVM tuning](#jvm-tuning)
    * [How to specify the amount of memory used by a service](#how-to-specify-the-amount-of-memory-used-by-a-service)
    * [How to enable a remote JMX connection to a service](#how-to-enable-a-remote-jmx-connection-to-a-service)
-7. [Going further](#going-further)
+6. [Going further](#going-further)
    * [Using a newer stack version](#using-a-newer-stack-version)
-   * [Plugins and integrations](#plugins-and-integrations)
    * [Swarm mode](#swarm-mode)
 
 ## Requirements
@@ -53,7 +54,8 @@ Based on the official Docker images from Elastic:
 * 1.5 GB of RAM
 
 By default, the stack exposes the following ports:
-* 5000: Logstash TCP input
+* 5044: Logstash TCP input
+* 9600: Logstash TCP input
 * 9200: Elasticsearch HTTP
 * 9300: Elasticsearch TCP transport
 * 5601: Kibana
@@ -86,13 +88,29 @@ exclusively. Make sure the repository is cloned in one of those locations or fol
 
 ## Usage
 
+Clone this repository
+
 ### Bringing up the stack
 
-Clone this repository, then start the stack using Docker Compose:
+To start the **ELK stack** using Docker Compose:
 
 ```console
+$ cd elk_stack
 $ docker-compose up
 ```
+
+### Bringing up the beat
+
+First, in ```filebeat/filebeat.yml``` file, replace `<logstash server IP>` with the IP address your ELK stack is running on.
+
+Then, run the Filebeat as docker:
+
+```console
+$ cd filebeat
+$ docker-compose up
+```
+
+By default, all container logs of the server on which the Filbeat container is running will be shipped to Logstash container for processing.
 
 You can also run all services in the background (detached mode) by adding the `-d` flag to the above command.
 
@@ -100,9 +118,9 @@ You can also run all services in the background (detached mode) by adding the `-
 
 If you are starting the stack for the very first time, please read the section below attentively.
 
-## Initial setup
+### Initial setup
 
-### Setting up user authentication
+#### Setting up user authentication
 
 > :information_source: Refer to [How to disable paid features](#how-to-disable-paid-features) to disable authentication.
 
@@ -135,28 +153,20 @@ $ docker-compose restart kibana logstash
 > :information_source: Learn more about the security of the Elastic stack at [Tutorial: Getting started with
 > security][sec-tutorial].
 
-### Injecting data
+#### Log in Kibana
 
 Give Kibana about a minute to initialize, then access the Kibana web UI by hitting
-[http://localhost:5601](http://localhost:5601) with a web browser and use the following default credentials to log in:
+[http://localhost:5601](http://localhost:5601) or http://\<docker host IP\>:5601 with a web browser and use the following default credentials to log in:
 
 * user: *elastic*
 * password: *\<your generated elastic password>*
 
-Now that the stack is running, you can go ahead and inject some log entries. The shipped Logstash configuration allows
-you to send content via TCP:
 
-```console
-$ nc localhost 5000 < /path/to/logfile.log
-```
-
-You can also load the sample data provided by your Kibana installation.
-
-### Default Kibana index pattern creation
+#### Default Kibana index pattern creation
 
 When Kibana launches for the first time, it is not configured with any index pattern.
 
-#### Via the Kibana web UI
+##### Via the Kibana web UI
 
 > :information_source: You need to inject data into Logstash before being able to configure a Logstash index pattern via
 the Kibana web UI. Then all you have to do is hit the *Create* button.
@@ -164,7 +174,7 @@ the Kibana web UI. Then all you have to do is hit the *Create* button.
 Refer to [Connect Kibana with Elasticsearch][connect-kibana] for detailed instructions about the index pattern
 configuration.
 
-#### On the command line
+##### On the command line
 
 Create an index pattern via the Kibana API:
 
@@ -178,6 +188,7 @@ $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
 
 The created pattern will automatically be marked as the default index pattern as soon as the Kibana UI is opened for the first time.
 
+
 ## Configuration
 
 > :information_source: Configuration is not dynamically reloaded, you will need to restart individual components after
@@ -185,7 +196,7 @@ any configuration change.
 
 ### How to configure Elasticsearch
 
-The Elasticsearch configuration is stored in [`elasticsearch/config/elasticsearch.yml`][config-es].
+The Elasticsearch configuration is stored in [`elk_stack/elasticsearch/config/elasticsearch.yml`][config-es].
 
 You can also specify the options you want to override by setting environment variables inside the Compose file:
 
@@ -202,7 +213,7 @@ containers: [Install Elasticsearch with Docker][es-docker].
 
 ### How to configure Kibana
 
-The Kibana default configuration is stored in [`kibana/config/kibana.yml`][config-kbn].
+The Kibana default configuration is stored in [`elk_stack/kibana/config/kibana.yml`][config-kbn].
 
 It is also possible to map the entire `config` directory instead of a single file.
 
@@ -211,13 +222,19 @@ containers: [Running Kibana on Docker][kbn-docker].
 
 ### How to configure Logstash
 
-The Logstash configuration is stored in [`logstash/config/logstash.yml`][config-ls].
+The Logstash configuration is stored in [`elk_stack/logstash/config/logstash.yml`][config-ls].
 
 It is also possible to map the entire `config` directory instead of a single file, however you must be aware that
 Logstash will be expecting a [`log4j2.properties`][log4j-props] file for its own logging.
 
 Please refer to the following documentation page for more details about how to configure Logstash inside Docker
 containers: [Configuring Logstash for Docker][ls-docker].
+
+### How to configure Filebeat
+
+The Filebeat configuration is stored in [`filebeat/config/filebeat.yml`][config-fb]
+
+Please refer to the following documentation page for more details about how to configure Filebeat to take container logs as an input: [Container Input][fb-container-input], or how to run Filebeat as a container: [Running Filebeat on Docker][fb-docker].
 
 ### How to disable paid features
 
@@ -250,23 +267,6 @@ This will store Elasticsearch data inside `/path/to/storage`.
 user][esuser] is used within the Elasticsearch image, therefore the mounted data directory must be writable by the uid
 `1000`.
 
-## Extensibility
-
-### How to add plugins
-
-To add plugins to any ELK component you have to:
-
-1. Add a `RUN` statement to the corresponding `Dockerfile` (eg. `RUN logstash-plugin install logstash-filter-json`)
-2. Add the associated plugin code configuration to the service configuration (eg. Logstash input/output)
-3. Rebuild the images using the `docker-compose build` command
-
-### How to enable the provided extensions
-
-A few extensions are available inside the [`extensions`](extensions) directory. These extensions provide features which
-are not part of the standard Elastic stack, but can be used to enrich it with extra integrations.
-
-The documentation for these extensions is provided inside each individual subdirectory, on a per-extension basis. Some
-of them require manual changes to the default ELK configuration.
 
 ## JVM tuning
 
@@ -364,13 +364,16 @@ instead of `elasticsearch`.
 
 [connect-kibana]: https://www.elastic.co/guide/en/kibana/current/connect-to-elasticsearch.html
 
-[config-es]: ./elasticsearch/config/elasticsearch.yml
-[config-kbn]: ./kibana/config/kibana.yml
-[config-ls]: ./logstash/config/logstash.yml
+[config-es]: ./elk_stack/elasticsearch/config/elasticsearch.yml
+[config-kbn]: ./elk_stack/kibana/config/kibana.yml
+[config-ls]: ./elk_stack/logstash/config/logstash.yml
+[config-fb]: ./filebeat/config/filebeat.yml
 
 [es-docker]: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 [kbn-docker]: https://www.elastic.co/guide/en/kibana/current/docker.html
 [ls-docker]: https://www.elastic.co/guide/en/logstash/current/docker-config.html
+[fb-docker]: https://www.elastic.co/guide/en/beats/filebeat/current/running-on-docker.html
+[fb-container-input]: https://www.elastic.co/guide/en/beats/filebeat/master/filebeat-input-container.html
 
 [log4j-props]: https://github.com/elastic/logstash/tree/7.3/docker/data/logstash/config
 [esuser]: https://github.com/elastic/elasticsearch/blob/7.3/distribution/docker/src/docker/Dockerfile#L18-L19
