@@ -1,4 +1,4 @@
-# Centralized Container Logging: Elastic stack (ELK) + Filebeat on Docker
+# Centralized Container Logging: Elastic Stack (ELK + Filebeat) on Docker
 
 
 This repository, modified from the [original repository][original-repo], is about creating a **centralized logging platform** for your Docker containers, using **ELK stack + Filebeat**, which are also running on Docker.
@@ -6,6 +6,8 @@ This repository, modified from the [original repository][original-repo], is abou
 "ELK" is the acronym for three open source projects: Elasticsearch, Logstash, and Kibana. **Elasticsearch** is a search and analytics engine. **Logstash** is a server‑side data processing pipeline that ingests data from multiple sources simultaneously, transforms it, and then sends it to a "stash" like Elasticsearch. **Kibana** lets users visualize data with charts and graphs in Elasticsearch.
 
 On top the ELK stack is **Filebeat**, a log shipper belonging to the Beats family — a group of lightweight shippers installed on hosts for shipping different kinds of data into the ELK Stack for analysis.
+
+![ELK + Filebeat Image][elk-fb]
 
 Based on the official Docker images from Elastic:
 
@@ -29,6 +31,7 @@ Based on the official Docker images from Elastic:
      * [Setting up user authentication](#setting-up-user-authentication)
      * [Log in Kibana](#log-in-kibana)
      * [Default Kibana index pattern creation](#default-kibana-index-pattern-creation)
+   * [Go to Production](#go-to-production)
 3. [Configuration](#configuration)
    * [How to configure Elasticsearch](#how-to-configure-elasticsearch)
    * [How to configure Kibana](#how-to-configure-kibana)
@@ -89,9 +92,13 @@ exclusively. Make sure the repository is cloned in one of those locations or fol
 
 ## Usage
 
-Clone this repository
+In dev/test environment, ELK stack and Filbeat can run separately using `docker-compose up`and do not need to share a bridge or overlay network; however, Filebeat needs to be able to connect to the host of ELK.
+
+In [production](#go-to-production) environment, it is recommended to run ELK + Filebeat as ONE stack in a Docker Swarm.
 
 ### Bringing up the stack
+
+Clone this repository to the server on which the stack will be running.
 
 To start the **ELK stack** using Docker Compose:
 
@@ -102,7 +109,9 @@ $ docker-compose up
 
 ### Bringing up the beat
 
-First, in ```filebeat/filebeat.yml``` file, replace `<logstash server IP>` with the IP address your ELK stack is running on.
+Clone this repository to the server from which you like to ship logs to ELK stack.
+
+First, in ```filebeat/filebeat.yml``` file, you **MUST** replace `<logstash server IP>` with the IP address your ELK stack is running on.
 
 Then, run the Filebeat as docker:
 
@@ -189,6 +198,9 @@ $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
 
 The created pattern will automatically be marked as the default index pattern as soon as the Kibana UI is opened for the first time.
 
+### Go to Production
+
+To be added...
 
 ## Configuration
 
@@ -370,6 +382,7 @@ instead of `elasticsearch`.
 
 
 [original-repo]: https://github.com/deviantony/docker-elk
+[elk-fb]: https://logz.io/wp-content/uploads/2017/06/relationship-between-filebeat-and-logstash.png
 
 [elk-stack]: https://www.elastic.co/elk-stack
 [stack-features]: https://www.elastic.co/products/stack
