@@ -202,6 +202,11 @@ The created pattern will automatically be marked as the default index pattern as
 
 To be added...
 
+My idea to persist the logs:
+1. Run a cron job that constantly copies container logs to a dedicated location like `/data`, so that even when the containers are removed along with the original copies of their logs, we still have access to their logs for debugging and other purposes.
+2. Configure the filebeat containers to fetch the logs from the dedicated location. 
+
+
 ## Configuration
 
 > :information_source: Configuration is not dynamically reloaded, you will need to restart individual components after
