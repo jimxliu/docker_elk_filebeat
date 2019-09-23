@@ -103,7 +103,7 @@ Clone this repository to the server on which the stack will be running.
 To start the **ELK stack** using Docker Compose:
 
 ```console
-$ cd elk_stack
+$ cd elk
 $ docker-compose up
 ```
 
@@ -209,7 +209,7 @@ any configuration change.
 
 ### How to configure Elasticsearch
 
-The Elasticsearch configuration is stored in [`elk_stack/elasticsearch/config/elasticsearch.yml`][config-es].
+The Elasticsearch configuration is stored in [`elasticsearch.yml`][config-es].
 
 You can also specify the options you want to override by setting environment variables inside the Compose file:
 
@@ -226,7 +226,7 @@ containers: [Install Elasticsearch with Docker][es-docker].
 
 ### How to configure Kibana
 
-The Kibana default configuration is stored in [`elk_stack/kibana/config/kibana.yml`][config-kbn].
+The Kibana default configuration is stored in [`kibana.yml`][config-kbn].
 
 It is also possible to map the entire `config` directory instead of a single file.
 
@@ -235,7 +235,7 @@ containers: [Running Kibana on Docker][kbn-docker].
 
 ### How to configure Logstash
 
-The Logstash configuration is stored in [`elk_stack/logstash/config/logstash.yml`][config-ls].
+The Logstash configuration is stored in [`logstash.yml`][config-ls].
 
 It is also possible to map the entire `config` directory instead of a single file, however you must be aware that
 Logstash will be expecting a [`log4j2.properties`][log4j-props] file for its own logging.
@@ -245,7 +245,7 @@ containers: [Configuring Logstash for Docker][ls-docker].
 
 ### How to configure Filebeat
 
-The Filebeat configuration is stored in [`filebeat/config/filebeat.yml`][config-fb]
+The Filebeat configuration is stored in [`filebeat.yml`][config-fb]
 
 By default, it takes all the containers' logs on its host as the input: 
 
@@ -401,9 +401,9 @@ instead of `elasticsearch`.
 
 [connect-kibana]: https://www.elastic.co/guide/en/kibana/current/connect-to-elasticsearch.html
 
-[config-es]: ./elk_stack/elasticsearch/config/elasticsearch.yml
-[config-kbn]: ./elk_stack/kibana/config/kibana.yml
-[config-ls]: ./elk_stack/logstash/config/logstash.yml
+[config-es]: ./elk/elasticsearch/config/elasticsearch.yml
+[config-kbn]: ./elk/kibana/config/kibana.yml
+[config-ls]: ./elk/logstash/config/logstash.yml
 [config-fb]: ./filebeat/config/filebeat.yml
 
 [es-docker]: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
