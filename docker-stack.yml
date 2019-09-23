@@ -1,10 +1,12 @@
 version: '3.3'
 
 services:
-
+  
   elasticsearch:
     image: 127.0.0.1:5000/elasticsearch:7.3.0
-    build: ./elk_stack/elasticsearch
+    build: 
+      context: ./elk_stack/elasticsearch
+    
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -43,10 +45,10 @@ services:
       replicas: 1
 
   filebeat:
-    image: 127.0.0.1:5000/
+    image: 127.0.0.1:5000/filebeat:7.3.0
     build: ./filebeat
     networks:
-      - elk:
+      - elk
     deploy:
       mode: global
 
