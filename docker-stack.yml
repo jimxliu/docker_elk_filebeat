@@ -3,13 +3,13 @@ version: '3.3'
 services:
   
   elasticsearch:
-    image: 127.0.0.1:5000/elasticsearch:7.3.0
-    build: 
-      context: ./elk_stack/elasticsearch
-    
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
     ports:
       - "9200:9200"
       - "9300:9300"
+    configs:
+      - source: elastic_config
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
       ELASTIC_PASSWORD: changeme
@@ -18,13 +18,20 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
 
   logstash:
-    image: 127.0.0.1:5000/logstash:7.3.0
-    build: ./elk_stack/logstash
+    image: docker.elastic.co/logstash/logstash:7.3.0
     ports:
       - "5044:5044"
       - "9600:9600"
+    configs:
+      - source: logstash_config
+        target: /usr/share/logstash/config/logstash.yml
+      - source: logstash_pipeline
+        target: /usr/share/logstash/pipeline/logstash.conf  
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
@@ -32,25 +39,49 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
 
   kibana:
-    image: 127.0.0.1:5000/kibana:7.3.0
-    build: ./elk_stack/kibana
+    image: docker.elastic.co/kibana/kibana:7.3.0
     ports:
       - "5601:5601"
+    configs:
+      - source: kibana_config
+        target: /usr/share/kibana/config/kibana.yml
     networks:
       - elk
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
 
   filebeat:
-    image: 127.0.0.1:5000/filebeat:7.3.0
-    build: ./filebeat
+    image: docker.elastic.co/beats/filebeat:7.3.0
+    configs:
+      - source: filebeat_config
+        target: /usr/share/filebeat/filebeat.yml
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
     networks:
       - elk
     deploy:
       mode: global
+
+configs:
+  elastic_config:
+    file: ./elk/elasticsearch/config/elasticsearch.yml
+  logstash_config:
+    file: ./elk/logstash/config/logstash.yml
+  logstash_pipeline:
+    file: ./elk/logstash/pipeline/logstash.conf
+  kibana_config:
+    file: ./elk/kibana/config/kibana.yml
+  filebeat_config:
+    file: ./filebeat/config/filebeat.yml
 
 networks:
   elk:
