@@ -6,7 +6,6 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
     ports:
       - "9200:9200"
-      - "9300:9300"
     configs:
       - source: elastic_config
         target: /usr/share/elasticsearch/config/elasticsearch.yml
@@ -26,7 +25,6 @@ services:
     image: docker.elastic.co/logstash/logstash:7.3.0
     ports:
       - "5044:5044"
-      - "9600:9600"
     configs:
       - source: logstash_config
         target: /usr/share/logstash/config/logstash.yml
@@ -60,12 +58,13 @@ services:
           - node.role == manager
 
   filebeat:
+    user: root  
     image: docker.elastic.co/beats/filebeat:7.3.0
-    configs:
-      - source: filebeat_config
-        target: /usr/share/filebeat/filebeat.yml
     volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+       - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    configs:
+       - source: filebeat_config
+         target: /usr/share/filebeat/filebeat.yml
     networks:
       - elk
     deploy:

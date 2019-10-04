@@ -8,3 +8,4 @@ services:
         ELK_VERSION: $ELK_VERSION
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./config/filebeat.yml:/usr/share:/usr/share/filebeat/filebeat.yml
